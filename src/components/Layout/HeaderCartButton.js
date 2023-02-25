@@ -1,13 +1,13 @@
 import CartIcon from "../Cart/CartIcon";
-import calsses from "./HeaderCartButton.module.css";
+import classes from "./HeaderCartButton.module.css";
 const HeaderCartButton = (props) => {
   return (
-    <button className={calsses.button}>
-      <span className={calsses.icon}>
+    <button onClick={props.onClick} className={classes.button}>
+      <span className={classes.icon}>
         <CartIcon />
       </span>
       <span>Your Cart</span>
-      <span className={calsses.badge}>3</span>
+      <span className={classes.badge}>3</span>
     </button>
   );
 };
