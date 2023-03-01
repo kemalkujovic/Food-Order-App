@@ -2,6 +2,9 @@ import Card from "../UI/Card";
 import MealItem from "./MealItem/MealItem";
 import classes from "./AvailableMeals.module.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
+const url =
+  "https://react-df14a-default-rtdb.europe-west1.firebasedatabase.app/melas.json";
 const AvailableMeals = () => {
   const [meals, setMealas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -9,24 +12,26 @@ const AvailableMeals = () => {
   useEffect(() => {
     setIsLoading(true);
     const fetchMeals = async () => {
-      const response = await fetch(
-        "https://react-df14a-default-rtdb.europe-west1.firebasedatabase.app/melas.json"
-      );
-      if (!response.ok) {
-        throw new Error("Something went wrong!");
-      }
-      const responseData = await response.json();
-      const loadedMeals = [];
+      try {
+        const response = await axios.get(url);
+        console.log(response);
 
-      for (const key in responseData) {
-        loadedMeals.push({
-          id: key,
-          name: responseData[key].name,
-          description: responseData[key].description,
-          price: responseData[key].price,
-        });
+        const responseData = response.data;
+        const loadedMeals = [];
+
+        for (const key in responseData) {
+          loadedMeals.push({
+            id: key,
+            name: responseData[key].name,
+            description: responseData[key].description,
+            price: responseData[key].price,
+          });
+        }
+        setMealas(loadedMeals);
+      } catch (error) {
+        setHttpError("Something went wrong!");
       }
-      setMealas(loadedMeals);
+
       setIsLoading(false);
     };
 
