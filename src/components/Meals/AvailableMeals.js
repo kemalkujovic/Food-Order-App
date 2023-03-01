@@ -4,7 +4,9 @@ import classes from "./AvailableMeals.module.css";
 import { useEffect, useState } from "react";
 const AvailableMeals = () => {
   const [meals, setMealas] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
+    setIsLoading(true);
     const fetchMeals = async () => {
       const response = await fetch(
         "https://react-df14a-default-rtdb.europe-west1.firebasedatabase.app/melas.json"
@@ -22,9 +24,18 @@ const AvailableMeals = () => {
         });
       }
       setMealas(loadedMeals);
+      setIsLoading(false);
     };
     fetchMeals();
   }, []);
+
+  if (isLoading) {
+    return (
+      <section className={classes.MealsLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
 
   const mealsList = meals.map((meal) => (
     <MealItem
